@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["bun"]
+  },
+  "include": [
+    "scripts/**/*.ts",
+    "src/course-grades.ts",
+    "src/grade-report.ts",
+    "src/types.ts",
+    "src/user-account.ts"
+  ]
+}

@@ -1,0 +1,13 @@
+diff --git a/ios/bottom-tabs/RNSBottomTabsScreenComponentView.mm b/ios/bottom-tabs/RNSBottomTabsScreenComponentView.mm
+index 174ee450a1c9370bc56633db266b5f9db1256558..b4d07a9af524de99b29a8d4344a421575c99fc05 100644
+--- a/ios/bottom-tabs/RNSBottomTabsScreenComponentView.mm
++++ b/ios/bottom-tabs/RNSBottomTabsScreenComponentView.mm
+@@ -67,7 +67,7 @@ - (void)initState
+   // This is a temporary workaround to avoid UIScrollEdgeEffect glitch
+   // when changing tabs when ScrollView is present.
+   // TODO: don't hardcode color here
+-  self.backgroundColor = [UIColor whiteColor];
++  self.backgroundColor = [UIColor clearColor];
+ 
+   [self resetProps];
+ }

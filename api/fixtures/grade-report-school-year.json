@@ -1,0 +1,245 @@
+{
+  "sessionRef": "fixture-school-year",
+  "district": "example.infinitecampus.org",
+  "user": {
+    "personID": 100,
+    "username": "student",
+    "firstName": "Sample",
+    "lastName": "Student",
+    "homepage": "student"
+  },
+  "enrollments": [
+    {
+      "enrollmentID": 1,
+      "displayName": "26-27 Example High",
+      "terms": [
+        {
+          "termID": 101,
+          "termName": "Quarter 4",
+          "termSeq": 4,
+          "calendarID": 10,
+          "startDate": "2026-03-23",
+          "endDate": "2026-06-04",
+          "courses": [
+            {
+              "courseName": "Old Course",
+              "teacherDisplay": "Old Teacher",
+              "sectionID": 1001,
+              "structureID": 1,
+              "endYear": 2026,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 1,
+                  "taskName": "Progress Grade",
+                  "hasAssignments": true,
+                  "hasDetail": true,
+                  "modifiedDate": "2026-05-30T12:00:00Z",
+                  "termID": 101,
+                  "score": "B",
+                  "percent": 85
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "termID": 201,
+          "termName": "Quarter 1",
+          "termSeq": 1,
+          "calendarID": 20,
+          "startDate": "2026-08-13",
+          "endDate": "2026-10-09",
+          "courses": [
+            {
+              "courseName": "Biology",
+              "teacherDisplay": "Dr. Rivera",
+              "sectionID": 2001,
+              "structureID": 2,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 2,
+                  "taskName": "Progress Grade",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": "2026-08-25T12:00:00Z",
+                  "termID": 201,
+                  "score": "A",
+                  "percent": 95
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "termID": 202,
+          "termName": "Quarter 2",
+          "termSeq": 2,
+          "calendarID": 20,
+          "startDate": "2026-10-12",
+          "endDate": "2026-12-18",
+          "courses": [
+            {
+              "courseName": "Biology",
+              "teacherDisplay": "Dr. Rivera",
+              "sectionID": 2001,
+              "structureID": 2,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 3,
+                  "taskName": "Semester Grade",
+                  "hasAssignments": true,
+                  "hasDetail": true,
+                  "modifiedDate": "2026-08-30T12:00:00Z",
+                  "termID": 202,
+                  "score": null,
+                  "percent": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "assignmentName": "Lab Safety Quiz",
+      "courseName": "Biology",
+      "objectSectionID": 9001,
+      "sectionID": 2001,
+      "dueDate": "2026-09-02",
+      "assignedDate": "2026-08-28",
+      "scoreModifiedDate": "2026-08-31T10:00:00Z",
+      "scorePoints": "9",
+      "score": "9",
+      "scorePercentage": "90",
+      "scoringType": "p",
+      "totalPoints": 10,
+      "comments": null,
+      "feedback": null,
+      "notGraded": false
+    }
+  ],
+  "details": {
+    "2001": {
+      "terms": [
+        {
+          "calendarID": 20,
+          "termID": 201,
+          "structureID": 2,
+          "termName": "Quarter 1",
+          "termScheduleID": 1,
+          "termScheduleName": "Quarter",
+          "termSeq": 1,
+          "isPrimary": true,
+          "startDate": "2026-08-13",
+          "endDate": "2026-10-09"
+        },
+        {
+          "calendarID": 20,
+          "termID": 202,
+          "structureID": 2,
+          "termName": "Quarter 2",
+          "termScheduleID": 1,
+          "termScheduleName": "Quarter",
+          "termSeq": 2,
+          "isPrimary": true,
+          "startDate": "2026-10-12",
+          "endDate": "2026-12-18"
+        }
+      ],
+      "details": [
+        {
+          "task": {
+            "taskID": 2,
+            "taskName": "Progress Grade",
+            "termID": 201,
+            "termName": "Quarter 1",
+            "termSeq": 1,
+            "courseName": "Biology",
+            "sectionID": 2001,
+            "modifiedDate": "2026-08-25T12:00:00Z",
+            "score": "A",
+            "percent": 95,
+            "progressScore": "A",
+            "progressPercent": 95,
+            "progressPointsEarned": 19,
+            "progressTotalPoints": 20,
+            "comments": null,
+            "hasAssignments": false,
+            "hasDetail": false,
+            "groupWeighted": false
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "taskID": 3,
+            "taskName": "Semester Grade",
+            "termID": 202,
+            "termName": "Quarter 2",
+            "termSeq": 2,
+            "courseName": "Biology",
+            "sectionID": 2001,
+            "modifiedDate": "2026-08-31T10:00:00Z",
+            "score": "A",
+            "percent": 95,
+            "progressScore": "A",
+            "progressPercent": 95,
+            "progressPointsEarned": 19,
+            "progressTotalPoints": 20,
+            "comments": null,
+            "hasAssignments": true,
+            "hasDetail": true,
+            "groupWeighted": false
+          },
+          "categories": [
+            {
+              "groupID": 50,
+              "name": "Assessments",
+              "weight": 1,
+              "progress": {
+                "progressScore": "A",
+                "progressPercent": 95,
+                "progressPointsEarned": 19,
+                "progressTotalPoints": 20
+              },
+              "assignments": [
+                {
+                  "objectSectionID": 9001,
+                  "assignmentName": "Lab Safety Quiz",
+                  "sectionID": 2001,
+                  "dueDate": "2026-09-02",
+                  "assignedDate": "2026-08-28",
+                  "scoreModifiedDate": "2026-08-31T10:00:00Z",
+                  "termIDs": [201],
+                  "score": "9",
+                  "scorePoints": "9",
+                  "scorePercentage": "90",
+                  "scoringType": "p",
+                  "totalPoints": 10,
+                  "comments": null,
+                  "feedback": null,
+                  "late": false,
+                  "missing": false,
+                  "dropped": false,
+                  "incomplete": false,
+                  "turnedIn": true,
+                  "notGraded": false,
+                  "multiplier": 1
+                }
+              ]
+            }
+          ],
+          "children": null
+        }
+      ]
+    }
+  }
+}

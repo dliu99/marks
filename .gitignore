@@ -1,0 +1,44 @@
+node_modules/
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+# expo router
+expo-env.d.ts
+
+# firebase/supabase/vexo
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.context/
+
+ios
+android
+
+# macOS
+.DS_Store
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
+
+#agents
+.agents
+.codex
+.cursor
+api/.wrangler
+# Local workspaces and signing credentials
+.superset/
+.worktreeinclude
+credentials.json
+*.ipa
+*.aab
+*.apk

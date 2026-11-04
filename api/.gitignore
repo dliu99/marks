@@ -1,0 +1,5 @@
+# deps
+node_modules/
+
+# Cloudflare Workers
+.dev.vars

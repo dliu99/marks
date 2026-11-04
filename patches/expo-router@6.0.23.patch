@@ -1,0 +1,24 @@
+diff --git a/build/native-tabs/NativeBottomTabs/NativeTabsView.js b/build/native-tabs/NativeBottomTabs/NativeTabsView.js
+index 106de95d46a52d344b5743a8423a47571195148f..bda2d324151b53a1fd7f69ee5c4e394a18c171a0 100644
+--- a/build/native-tabs/NativeBottomTabs/NativeTabsView.js
++++ b/build/native-tabs/NativeBottomTabs/NativeTabsView.js
+@@ -38,6 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.NativeTabsView = NativeTabsView;
+ const react_1 = __importStar(require("react"));
++const Haptics = __importStar(require("expo-haptics"));
+ const react_native_screens_1 = require("react-native-screens");
+ const package_json_1 = __importDefault(require("react-native-screens/package.json"));
+ const appearance_1 = require("./appearance");
+@@ -106,7 +107,10 @@ function NativeTabsView(props) {
+     tabBarTintColor={props?.tintColor} tabBarMinimizeBehavior={minimizeBehavior} 
+     // #endregion
+     onNativeFocusChange={({ nativeEvent: { tabKey } }) => {
+-            const descriptor = descriptors[tabKey];
++        if (process.env.EXPO_OS==='ios') {
++            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
++        }
++        const descriptor = descriptors[tabKey];
+             const route = descriptor.route;
+             navigation.dispatch({
+                 type: 'JUMP_TO',

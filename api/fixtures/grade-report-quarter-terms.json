@@ -1,0 +1,653 @@
+{
+  "sessionRef": "fixture-quarter-terms",
+  "district": "quarter-terms.example",
+  "enrollments": [
+    {
+      "enrollmentID": 3,
+      "displayName": "26-27 Example Quarter High",
+      "gradesEnabled": true,
+      "assignmentsEnabled": true,
+      "terms": [
+        {
+          "termID": 301,
+          "termName": "Qtr 1",
+          "termSeq": 1,
+          "calendarID": 30,
+          "startDate": "2026-08-11",
+          "endDate": "2026-10-09",
+          "courses": [
+            {
+              "courseName": "Chemistry",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4001,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 301,
+                  "termSeq": 1,
+                  "termName": "Qtr 1",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 301,
+                  "termSeq": 1,
+                  "termName": "Qtr 1",
+                  "hasAssignments": true,
+                  "hasDetail": true,
+                  "modifiedDate": "2026-09-25 08:30:00",
+                  "progressScore": "91",
+                  "progressPercent": 91.2
+                }
+              ]
+            },
+            {
+              "courseName": "Band",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4002,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 301,
+                  "termSeq": 1,
+                  "termName": "Qtr 1",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 301,
+                  "termSeq": 1,
+                  "termName": "Qtr 1",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": "2026-09-20 08:00:00",
+                  "score": "P",
+                  "percent": 100
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "termID": 302,
+          "termName": "Qtr 2",
+          "termSeq": 2,
+          "calendarID": 30,
+          "startDate": "2026-10-13",
+          "endDate": "2026-12-18",
+          "courses": [
+            {
+              "courseName": "Chemistry",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4001,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 302,
+                  "termSeq": 2,
+                  "termName": "Qtr 2",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 302,
+                  "termSeq": 2,
+                  "termName": "Qtr 2",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                }
+              ]
+            },
+            {
+              "courseName": "Band",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4002,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 302,
+                  "termSeq": 2,
+                  "termName": "Qtr 2",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 302,
+                  "termSeq": 2,
+                  "termName": "Qtr 2",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "termID": 303,
+          "termName": "Qtr 3",
+          "termSeq": 3,
+          "calendarID": 30,
+          "startDate": "2027-01-05",
+          "endDate": "2027-03-12",
+          "courses": [
+            {
+              "courseName": "Chemistry",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4001,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 303,
+                  "termSeq": 3,
+                  "termName": "Qtr 3",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 303,
+                  "termSeq": 3,
+                  "termName": "Qtr 3",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                }
+              ]
+            },
+            {
+              "courseName": "Band",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4002,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 303,
+                  "termSeq": 3,
+                  "termName": "Qtr 3",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 303,
+                  "termSeq": 3,
+                  "termName": "Qtr 3",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "termID": 304,
+          "termName": "Qtr 4",
+          "termSeq": 4,
+          "calendarID": 30,
+          "startDate": "2027-03-23",
+          "endDate": "2027-05-27",
+          "courses": [
+            {
+              "courseName": "Chemistry",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4001,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 304,
+                  "termSeq": 4,
+                  "termName": "Qtr 4",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 304,
+                  "termSeq": 4,
+                  "termName": "Qtr 4",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 12,
+                  "taskName": "Final",
+                  "termID": 304,
+                  "termSeq": 4,
+                  "termName": "Qtr 4",
+                  "hasAssignments": false,
+                  "hasDetail": true,
+                  "modifiedDate": "2026-09-26 08:30:00",
+                  "progressScore": "91",
+                  "progressPercent": 91.2
+                }
+              ]
+            },
+            {
+              "courseName": "Band",
+              "teacherDisplay": "Teacher",
+              "sectionID": 4002,
+              "structureID": 5,
+              "endYear": 2027,
+              "dropped": false,
+              "gradingTasks": [
+                {
+                  "taskID": 10,
+                  "taskName": "Eligibility",
+                  "termID": 304,
+                  "termSeq": 4,
+                  "termName": "Qtr 4",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 11,
+                  "taskName": "Quarter",
+                  "termID": 304,
+                  "termSeq": 4,
+                  "termName": "Qtr 4",
+                  "hasAssignments": false,
+                  "hasDetail": false,
+                  "modifiedDate": null
+                },
+                {
+                  "taskID": 12,
+                  "taskName": "Final",
+                  "termID": 304,
+                  "termSeq": 4,
+                  "termName": "Qtr 4",
+                  "hasAssignments": false,
+                  "hasDetail": true,
+                  "modifiedDate": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assignments": [],
+  "details": {
+    "4001": {
+      "terms": [
+        {
+          "calendarID": 30,
+          "termID": 301,
+          "structureID": 5,
+          "termName": "Qtr 1",
+          "termScheduleID": 3,
+          "termScheduleName": "Terms",
+          "termSeq": 1,
+          "isPrimary": true,
+          "startDate": "2026-08-11",
+          "endDate": "2026-10-09"
+        },
+        {
+          "calendarID": 30,
+          "termID": 302,
+          "structureID": 5,
+          "termName": "Qtr 2",
+          "termScheduleID": 3,
+          "termScheduleName": "Terms",
+          "termSeq": 2,
+          "isPrimary": true,
+          "startDate": "2026-10-13",
+          "endDate": "2026-12-18"
+        },
+        {
+          "calendarID": 30,
+          "termID": 303,
+          "structureID": 5,
+          "termName": "Qtr 3",
+          "termScheduleID": 3,
+          "termScheduleName": "Terms",
+          "termSeq": 3,
+          "isPrimary": true,
+          "startDate": "2027-01-05",
+          "endDate": "2027-03-12"
+        },
+        {
+          "calendarID": 30,
+          "termID": 304,
+          "structureID": 5,
+          "termName": "Qtr 4",
+          "termScheduleID": 3,
+          "termScheduleName": "Terms",
+          "termSeq": 4,
+          "isPrimary": true,
+          "startDate": "2027-03-23",
+          "endDate": "2027-05-27"
+        }
+      ],
+      "details": [
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 10,
+            "taskName": "Eligibility",
+            "termID": 301,
+            "termSeq": 1,
+            "termName": "Qtr 1",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": "91",
+            "progressPercent": 91.2,
+            "progressPointsEarned": 91.2,
+            "progressTotalPoints": 100,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 11,
+            "taskName": "Quarter",
+            "termID": 301,
+            "termSeq": 1,
+            "termName": "Qtr 1",
+            "hasAssignments": true,
+            "hasDetail": true,
+            "modifiedDate": "2026-09-25 08:30:00"
+          },
+          "categories": [
+            {
+              "groupID": 70,
+              "name": "Labs",
+              "weight": 0,
+              "progress": {
+                "progressScore": "91",
+                "progressPercent": 91.2,
+                "progressPointsEarned": 91.2,
+                "progressTotalPoints": 100
+              },
+              "assignments": [
+                {
+                  "objectSectionID": 9101,
+                  "assignmentName": "Lab 1",
+                  "sectionID": 4001,
+                  "dueDate": "2026-09-05",
+                  "assignedDate": "2026-09-05",
+                  "scoreModifiedDate": "2026-09-05",
+                  "termIDs": [301],
+                  "score": "45.6",
+                  "scorePoints": "45.6",
+                  "scorePercentage": "91.2",
+                  "scoringType": "p",
+                  "totalPoints": 50,
+                  "comments": null,
+                  "feedback": null,
+                  "late": false,
+                  "missing": false,
+                  "dropped": false,
+                  "incomplete": false,
+                  "turnedIn": true,
+                  "notGraded": false,
+                  "multiplier": 1
+                },
+                {
+                  "objectSectionID": 9102,
+                  "assignmentName": "Lab 2",
+                  "sectionID": 4001,
+                  "dueDate": "2026-09-19",
+                  "assignedDate": "2026-09-19",
+                  "scoreModifiedDate": "2026-09-19",
+                  "termIDs": [301],
+                  "score": "45.6",
+                  "scorePoints": "45.6",
+                  "scorePercentage": "91.2",
+                  "scoringType": "p",
+                  "totalPoints": 50,
+                  "comments": null,
+                  "feedback": null,
+                  "late": false,
+                  "missing": false,
+                  "dropped": false,
+                  "incomplete": false,
+                  "turnedIn": true,
+                  "notGraded": false,
+                  "multiplier": 1
+                }
+              ]
+            }
+          ],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 10,
+            "taskName": "Eligibility",
+            "termID": 302,
+            "termSeq": 2,
+            "termName": "Qtr 2",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 11,
+            "taskName": "Quarter",
+            "termID": 302,
+            "termSeq": 2,
+            "termName": "Qtr 2",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 10,
+            "taskName": "Eligibility",
+            "termID": 303,
+            "termSeq": 3,
+            "termName": "Qtr 3",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 11,
+            "taskName": "Quarter",
+            "termID": 303,
+            "termSeq": 3,
+            "termName": "Qtr 3",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 10,
+            "taskName": "Eligibility",
+            "termID": 304,
+            "termSeq": 4,
+            "termName": "Qtr 4",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": null,
+            "progressPercent": null,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 11,
+            "taskName": "Quarter",
+            "termID": 304,
+            "termSeq": 4,
+            "termName": "Qtr 4",
+            "hasAssignments": false,
+            "hasDetail": false,
+            "modifiedDate": null
+          },
+          "categories": [],
+          "children": null
+        },
+        {
+          "task": {
+            "courseName": "Chemistry",
+            "sectionID": 4001,
+            "score": null,
+            "percent": null,
+            "progressScore": "91",
+            "progressPercent": 91.2,
+            "progressPointsEarned": null,
+            "progressTotalPoints": null,
+            "comments": null,
+            "groupWeighted": false,
+            "taskID": 12,
+            "taskName": "Final",
+            "termID": 304,
+            "termSeq": 4,
+            "termName": "Qtr 4",
+            "hasAssignments": false,
+            "hasDetail": true,
+            "modifiedDate": "2026-09-26 08:30:00"
+          },
+          "categories": [],
+          "children": null
+        }
+      ]
+    }
+  }
+}

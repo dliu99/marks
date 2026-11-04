@@ -1,0 +1,5 @@
+# Only needed if you run your own optional legacy Worker.
+# Generate a long, random server-only sealing key. Never place it in EXPO_PUBLIC_*.
+IRON_KEY=
+EXPO_PUBLIC_SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=

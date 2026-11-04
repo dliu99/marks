@@ -1,0 +1,30 @@
+{
+  "fill": "system-light",
+  "groups": [
+    {
+      "layers": [
+        {
+          "hidden": false,
+          "image-name": "adaptive-icon.png",
+          "name": "adaptive-icon",
+          "position": {
+            "scale": 1,
+            "translation-in-points": [11.028576827832467, 20.50056440932235]
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.5
+      }
+    }
+  ],
+  "supported-platforms": {
+    "circles": ["watchOS"],
+    "squares": "shared"
+  }
+}
