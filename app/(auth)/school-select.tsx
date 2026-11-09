@@ -1,14 +1,5 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { fetch as expoFetch } from 'expo/fetch';
-import { parseSchoolLogin } from '@/shared/districts';
 import * as DropdownMenu from 'zeego/dropdown-menu';
 import { useState, useEffect } from 'react';
 import { ChevronDownIcon, Icon } from '@/components/ui/icon';
@@ -86,7 +77,6 @@ export default function SchoolSelect() {
   const [selectedState, setSelectedState] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [districts, setDistricts] = useState<District[]>([]);
-  const [manualURL, setManualURL] = useState('');
   const [searchError, setSearchError] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const insets = useSafeAreaInsets();
@@ -187,44 +177,9 @@ export default function SchoolSelect() {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
 
-        <View className="mb-4">
-          <TextInput
-            accessibilityLabel="School login link"
-            value={manualURL}
-            onChangeText={setManualURL}
-            placeholder="Or paste your school’s full login link"
-            placeholderTextColor="#a8a29e"
-            autoCapitalize="none"
-            autoCorrect={false}
-            keyboardType="url"
-            className="rounded-xl border border-stone-600 p-4 text-base text-white"
-          />
-          {manualURL.trim() ? (
-            <TouchableOpacity
-              accessibilityRole="button"
-              className="mt-2 rounded-xl bg-slate-100 p-4"
-              onPress={() => {
-                try {
-                  router.push({
-                    pathname: '/(auth)/auth-modal',
-                    params: parseSchoolLogin(manualURL),
-                  });
-                } catch (error) {
-                  Alert.alert(
-                    'Check your school link',
-                    error instanceof Error ? error.message : 'Invalid link.'
-                  );
-                }
-              }}>
-              <Text className="text-center text-base font-semibold text-slate-950">
-                Open school login
-              </Text>
-            </TouchableOpacity>
-          ) : null}
-        </View>
         {searchError ? (
           <Text className="mb-3 text-stone-300">
-            School search is unavailable. You can paste your school’s login link above.
+            School search is unavailable right now. Please try again later.
           </Text>
         ) : null}
         {loading ? <ActivityIndicator color="#ffffff" /> : null}

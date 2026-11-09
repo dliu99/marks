@@ -3,6 +3,7 @@ import { useSyncExternalStore } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useAuth } from '@/utils/auth-context';
+import { getVisibleSchoolDataStatus } from '@/shared/query-cache';
 
 export function OfflineStatus() {
   const client = useQueryClient();
@@ -10,16 +11,8 @@ export function OfflineStatus() {
   const snapshot = useSyncExternalStore(
     (listener) => client.getQueryCache().subscribe(listener),
     () => {
-      const queries = client.getQueryCache().findAll({ queryKey: ['ic'] });
-      const failedQueries = queries.filter(
-        (query) => query.state.error && query.state.data !== undefined
-      );
-      const failed = failedQueries.length > 0;
-      const timestamps = (failed ? failedQueries : queries)
-        .map((query) => query.state.dataUpdatedAt)
-        .filter((value) => value > 0);
-      const updated = timestamps.length ? Math.min(...timestamps) : 0;
-      return `${failed}|${updated}`;
+      const { failed, updatedAt } = getVisibleSchoolDataStatus(client);
+      return `${failed}|${updatedAt}`;
     }
   );
   const [failed, updated] = snapshot.split('|');
