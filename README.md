@@ -1,6 +1,6 @@
 # marks
 
-A React Native app for Infinite Campus grades, assignments, schedules, and what-if grades. As of 11 November 2026, the [app](https://archive.is/LrdOa) was taken down by Infinite Campus.
+A React Native app for Infinite Campus grades, assignments, schedules, and what-if grades. As of 12 November 2026, the [app](https://archive.is/LrdOa) was taken down from the App Store by Infinite Campus.
 
 <img width="300" height="652" alt="image" src="https://github.com/user-attachments/assets/e79869f8-598b-4107-a685-4b261aa26eb9" />
 
