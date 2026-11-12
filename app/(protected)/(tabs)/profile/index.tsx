@@ -1,4 +1,5 @@
-import { OfflineStatus } from '@/components/OfflineStatus';
+import { QueryErrorState } from '@/components/QueryErrorState';
+import { pickSchoolError } from '@/utils/school-error';
 import { View, Text, Pressable, Alert, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useUser, useProfile, useAppList } from '@/hooks/use-ic';
@@ -25,9 +26,9 @@ function ProfileCard({ label, value }: { label: string; value: string | null }) 
 
 export default function Profile() {
   const { setAuthStatus } = useAuth();
-  const { data: user, isLoading: userLoading, error: userError, refetch: refetchUser } = useUser();
+  const { isLoading: userLoading, error: userError, refetch: refetchUser } = useUser();
   const {
-    data: profile,
+    data: loadedProfile,
     isLoading: profileLoading,
     error: profileError,
     refetch: refetchProfile,
@@ -66,7 +67,9 @@ export default function Profile() {
   };
 
   const isLoading = userLoading || profileLoading;
-  const hasError = !!((userError && !user) || (profileError && !profile));
+  const error = pickSchoolError(userError, profileError);
+  // GPA and attendance come only from the latest successful request.
+  const profile = error ? undefined : loadedProfile;
 
   useFocusEffect(() => {
     shouldAttemptReviewRef.current = true;
@@ -106,11 +109,16 @@ export default function Profile() {
           />
         }>
         <Text className="mb-6 text-3xl font-bold text-white">Profile</Text>
-        <OfflineStatus />
-        {isLoading || hasError ? (
-          <Text className="mb-4 text-stone-400">
-            {isLoading ? 'Updating profile…' : 'Profile details are unavailable. Pull to refresh.'}
-          </Text>
+        {error ? (
+          <QueryErrorState
+            variant="inline"
+            error={error}
+            subject="GPA and attendance"
+            onRetry={onRefresh}
+            retrying={refreshing}
+          />
+        ) : isLoading ? (
+          <Text className="mb-4 text-stone-400">Updating profile…</Text>
         ) : null}
 
         {profile?.gpa && (
@@ -119,7 +127,7 @@ export default function Profile() {
             <ProfileCard label="Weighted GPA" value={profile.gpa.w} />
           </View>
         )}
-        {profile?.absences !== null && profile?.tardies !== null && (
+        {profile && profile.absences !== null && profile.tardies !== null && (
           <View className="mb-4 flex-row gap-4">
             <ProfileCard label="Absences" value={profile?.absences?.toString() ?? '—'} />
             <ProfileCard label="Tardies" value={profile?.tardies?.toString() ?? '—'} />

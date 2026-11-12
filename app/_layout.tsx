@@ -8,16 +8,9 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { PostHogProvider, usePostHog } from 'posthog-react-native';
 
 import '@/global.css';
-import {
-  QueryClient,
-  QueryClientProvider,
-  QueryCache,
-  MutationCache,
-  focusManager,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
 import { refreshAuthSession } from '@/utils/storage';
-import { refreshCampusSession } from '@/utils/campus-auth';
-import { restoreQueryCache, persistQueryCache } from '@/utils/query-persistence';
+import { subscribeCampusAuthStatus } from '@/utils/campus-network';
 import { AuthContext, AuthStatus } from '@/utils/auth-context';
 
 void SplashScreen.preventAutoHideAsync();
@@ -26,29 +19,13 @@ SplashScreen.setOptions({
   fade: true,
 });
 
-let isRefreshing = false;
-let lastRenewalAttemptAt = 0;
-let updateAuthStatus: ((status: AuthStatus) => void) | undefined;
-
-async function handle401Error(queryClient: QueryClient) {
-  if (isRefreshing || Date.now() - lastRenewalAttemptAt < 30000) return;
-  lastRenewalAttemptAt = Date.now();
-  isRefreshing = true;
-  try {
-    const status = await refreshCampusSession();
-    if (status === 'expired' || status === 'unauthenticated') updateAuthStatus?.(status);
-    if (status === 'authenticated') {
-      queryClient.invalidateQueries();
-    }
-  } finally {
-    isRefreshing = false;
-  }
-}
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60,
+      // School data is never kept across launches, and every screen open or app resume
+      // asks Infinite Campus again. If that request fails, screens show the error, not
+      // the older data still in memory.
+      staleTime: 0,
       gcTime: Infinity,
       networkMode: 'always',
       retry: (failureCount, error: any) => {
@@ -59,20 +36,6 @@ const queryClient = new QueryClient({
       },
     },
   },
-  queryCache: new QueryCache({
-    onError: async (error: any) => {
-      if (error?.status === 401) {
-        await handle401Error(queryClient);
-      }
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: async (error: any) => {
-      if (error?.status === 401) {
-        await handle401Error(queryClient);
-      }
-    },
-  }),
 });
 
 const posthogKey = process.env.EXPO_PUBLIC_POSTHOG_KEY?.trim();
@@ -106,13 +69,10 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    updateAuthStatus = setAuthStatus;
-    let unsubscribe: (() => void) | undefined;
+    const unsubscribeAuth = subscribeCampusAuthStatus(setAuthStatus);
     const bootstrap = async () => {
       try {
         await refreshAuth();
-        restoreQueryCache(queryClient);
-        unsubscribe = persistQueryCache(queryClient);
       } catch {
         setAuthStatus('error');
       } finally {
@@ -122,8 +82,7 @@ export default function Layout() {
 
     void bootstrap();
     return () => {
-      updateAuthStatus = undefined;
-      unsubscribe?.();
+      unsubscribeAuth();
     };
   }, []);
 

@@ -1,17 +1,38 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { useAllAssignments, useGrades } from '@/hooks/use-ic';
 import { AssignmentCard } from '@/components/AssignmentCard';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
+import { HeaderButton } from '@react-navigation/elements';
+import { Ionicons } from '@expo/vector-icons';
+import { AndroidSheetHeader } from '@/components/AndroidSheetHeader';
 import { useBottomContentPadding } from '@/utils/screen-spacing';
+import { QueryErrorState } from '@/components/QueryErrorState';
+import { pickSchoolError } from '@/utils/school-error';
 
 export default function DayModal() {
   const router = useRouter();
   const contentBottomPadding = useBottomContentPadding(24);
   const { date } = useLocalSearchParams<{ date: string }>();
-  const { data: assignments } = useAllAssignments();
-  const { data: grades } = useGrades();
+  const {
+    data: loadedAssignments,
+    error: assignmentsError,
+    refetch: refetchAssignments,
+  } = useAllAssignments();
+  const { data: loadedGrades, error: gradesError, refetch: refetchGrades } = useGrades();
+  const error = pickSchoolError(assignmentsError, gradesError);
+  const assignments = error ? undefined : loadedAssignments;
+  const grades = error ? undefined : loadedGrades;
+  const [retrying, setRetrying] = useState(false);
+  const retry = async () => {
+    setRetrying(true);
+    try {
+      await Promise.all([refetchAssignments(), refetchGrades()]);
+    } finally {
+      setRetrying(false);
+    }
+  };
 
   const courseNameMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -56,21 +77,30 @@ export default function DayModal() {
         }}
       />
       <View className="flex-1 bg-neutral-900">
-        <ScrollView
-          className="flex-1 px-4"
-          contentInsetAdjustmentBehavior="never"
-          contentContainerStyle={{ paddingTop: 16, paddingBottom: contentBottomPadding }}>
-          <View className="mb-10">
-            {selectedAssignments.map((assignment) => (
-              <AssignmentCard
-                key={`${assignment.objectSectionID}-${assignment.assignmentName}`}
-                assignment={assignment}
-                courseName={courseNameMap.get(assignment.sectionID) ?? assignment.courseName}
-                now={currentDate}
-              />
-            ))}
-          </View>
-        </ScrollView>
+        {error ? (
+          <QueryErrorState
+            error={error}
+            subject="assignments"
+            onRetry={retry}
+            retrying={retrying}
+          />
+        ) : (
+          <ScrollView
+            className="flex-1 px-4"
+            contentInsetAdjustmentBehavior="never"
+            contentContainerStyle={{ paddingTop: 16, paddingBottom: contentBottomPadding }}>
+            <View className="mb-10">
+              {selectedAssignments.map((assignment) => (
+                <AssignmentCard
+                  key={`${assignment.objectSectionID}-${assignment.assignmentName}`}
+                  assignment={assignment}
+                  courseName={courseNameMap.get(assignment.sectionID) ?? assignment.courseName}
+                  now={currentDate}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        )}
       </View>
     </>
   );

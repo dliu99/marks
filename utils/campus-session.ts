@@ -32,6 +32,9 @@ export async function initializeCampusStorage() {
       secureStorage.remove('session');
     }
   }
+  // 1.2.1–1.2.3 saved school data here and showed it when a refresh failed. Grades are
+  // now only shown from a successful request, so delete what earlier versions saved.
+  secureStorage.remove('school-cache-v1');
 }
 
 export const campusSessions = {

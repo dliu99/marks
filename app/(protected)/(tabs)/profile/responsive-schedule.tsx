@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import dayjs from 'dayjs';
 import { useGrades, useResponsiveSchedule, useUpdateResponsiveSchedule } from '@/hooks/use-ic';
 import { useHeaderHeight } from '@/hooks/use-header-height';
+import { QueryErrorState } from '@/components/QueryErrorState';
 import { playHaptic } from '@/utils/haptics';
 import {
   useBottomContentPadding,
@@ -42,12 +43,14 @@ export default function ResponsiveSchedule() {
   const calendarID = grades?.[0]?.calendarID;
   const structureID = grades?.[0]?.structureID;
   const {
-    data: sessions,
+    data: loadedSessions,
     isLoading,
     isFetching,
     error,
     refetch,
   } = useResponsiveSchedule(sectionID, calendarID, structureID);
+  // Offerings and seat counts come only from the latest successful request.
+  const sessions = error ? undefined : loadedSessions;
   const updateMutation = useUpdateResponsiveSchedule();
   const [query, setQuery] = useState('');
   const [mutatingOfferingId, setMutatingOfferingId] = useState<number | null>(null);
@@ -153,11 +156,17 @@ export default function ResponsiveSchedule() {
             titleColor="white"
           />
         }>
-        {error && (
-          <View className="mb-4 rounded-2xl bg-red-900/40 p-4">
-            <Text className="text-red-200">Unable to load. Pull to refresh.</Text>
-          </View>
-        )}
+        {error ? (
+          <QueryErrorState
+            variant="inline"
+            error={error}
+            subject="responsive schedule"
+            onRetry={async () => {
+              await refetch();
+            }}
+            retrying={isFetching}
+          />
+        ) : null}
 
         {isEmpty && (
           <View className="flex-1 items-center justify-center">

@@ -55,9 +55,22 @@ export async function renewCampusSession(session: CampusSession, request: typeof
       registrationToken: 'null',
     }).toString(),
   });
+  // IC redirects here when it no longer accepts the saved "keep me logged in" cookie
+  // (signed out elsewhere, password change, district policy). Only signing in fixes it.
+  if (/persistentCookieRevoked/i.test(response.headers.get('location') ?? '')) {
+    throw new CampusError('Your school login expired. Please sign in again.', 401);
+  }
   if (!response.ok && response.status !== 302 && response.status !== 303) {
     throw new CampusError('Unable to renew your school session.', response.status);
   }
-  await registerCampusDevice(session, request);
+  try {
+    await registerCampusDevice(session, request);
+  } catch (error) {
+    // IC answers 403 on /api/ when the bootstrap did not produce a signed-in session.
+    if (error instanceof CampusError && error.status === 403) {
+      throw new CampusError('Your school login expired. Please sign in again.', 401);
+    }
+    throw error;
+  }
   await verifyCampusUser(session, request);
 }

@@ -1,4 +1,3 @@
-import { OfflineStatus } from '@/components/OfflineStatus';
 import { Text, FlatList, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAllGradesWithDetails } from '@/hooks/use-ic';
@@ -76,7 +75,7 @@ function CourseCardWithDetails({
 export default function Grades() {
   const [refreshing, setRefreshing] = useState(false);
   const contentBottomPadding = useBottomContentPadding(24, { includesNativeTabBar: true });
-  const { data, isLoading, error, refetch } = useAllGradesWithDetails();
+  const { data, isLoading, error, refetch, isFetching } = useAllGradesWithDetails();
   const { showCoursePercentImpact, courseOrder, hiddenCourseIds } = usePreferences();
 
   const onRefresh = async () => {
@@ -117,14 +116,10 @@ export default function Grades() {
     );
   }
 
-  if (error && !data) {
+  if (error) {
     return (
       <SafeAreaView className="flex-1 bg-neutral-900" edges={['top']} collapsable={false}>
-        <QueryErrorState
-          title="Unable to load grades"
-          message="Grade data is unavailable right now. Try again."
-          onRetry={onRefresh}
-        />
+        <QueryErrorState error={error} subject="grades" onRetry={onRefresh} retrying={isFetching} />
       </SafeAreaView>
     );
   }
@@ -146,7 +141,6 @@ export default function Grades() {
           !isLoading ? (
             <>
               <Text className="mb-4 text-3xl font-bold text-white">Grades</Text>
-              <OfflineStatus />
             </>
           ) : null
         }

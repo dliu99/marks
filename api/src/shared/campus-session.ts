@@ -96,7 +96,14 @@ export function createCampusTransport(repository: SessionRepository, network: ty
     const headers = new Headers(init.headers);
     headers.delete('Host');
     headers.delete('Connection');
-    headers.set('Cookie', session.cookie);
+    headers.set(
+      'Cookie',
+      mergeCookies(session.cookie, [
+        'appType=student',
+        'campus_hybrid_app=student',
+        `deviceID=${session.deviceId}`,
+      ])
+    );
     if (!headers.has('Accept')) headers.set('Accept', 'application/json, text/plain, */*');
     if (!headers.has('User-Agent')) {
       const agent =
@@ -124,7 +131,7 @@ export function createCampusTransport(repository: SessionRepository, network: ty
       };
       response = await fetchWithTimeout(network, url.toString(), options);
     } catch {
-      throw new CampusError('Unable to reach your school. Your saved data is still available.', 0);
+      throw new CampusError('Unable to reach your school.', 0);
     }
     // A response belonging to a signed-out/replaced account must never restore its session.
     const current = repository.get();

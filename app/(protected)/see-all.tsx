@@ -4,11 +4,13 @@ import { useRouter } from 'expo-router';
 import { useAllAssignments, useGrades } from '@/hooks/use-ic';
 import { AssignmentCard } from '@/components/AssignmentCard';
 import { Assignment } from '@/api/src/types';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import { Ionicons } from '@expo/vector-icons';
 import { playHaptic } from '@/utils/haptics';
+import { QueryErrorState } from '@/components/QueryErrorState';
+import { pickSchoolError } from '@/utils/school-error';
 
 function getBeyondAssignments(assignments: Assignment[], today: dayjs.Dayjs): Assignment[] {
   const todayStart = today.startOf('day');
@@ -27,8 +29,30 @@ function getBeyondAssignments(assignments: Assignment[], today: dayjs.Dayjs): As
 
 export default function SeeAll() {
   const router = useRouter();
-  const { data: assignments, isLoading: assignmentsLoading } = useAllAssignments();
-  const { data: grades, isLoading: gradesLoading } = useGrades();
+  const {
+    data: loadedAssignments,
+    isLoading: assignmentsLoading,
+    error: assignmentsError,
+    refetch: refetchAssignments,
+  } = useAllAssignments();
+  const {
+    data: loadedGrades,
+    isLoading: gradesLoading,
+    error: gradesError,
+    refetch: refetchGrades,
+  } = useGrades();
+  const error = pickSchoolError(assignmentsError, gradesError);
+  const assignments = error ? undefined : loadedAssignments;
+  const grades = error ? undefined : loadedGrades;
+  const [retrying, setRetrying] = useState(false);
+  const retry = async () => {
+    setRetrying(true);
+    try {
+      await Promise.all([refetchAssignments(), refetchGrades()]);
+    } finally {
+      setRetrying(false);
+    }
+  };
 
   const courseNameMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -111,26 +135,32 @@ export default function SeeAll() {
           </View>
         )}
       </Pressable>
-      <SectionList
-        className="flex-1"
-        sections={sections}
-        keyExtractor={(assignment) => `${assignment.objectSectionID}-${assignment.assignmentName}`}
-        renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text className="mb-2 mt-5 text-xl font-semibold text-stone-500">{title}</Text>
-        )}
-        contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 32, paddingBottom: 24 }}
-        ListHeaderComponent={
-          beyondAssignments.length > 0 ? (
-            <Text className="text-3xl font-bold text-white">All Upcoming</Text>
-          ) : null
-        }
-        ListEmptyComponent={
-          <View className="flex-1 items-center justify-center pt-20">
-            <Text className="text-xl font-medium text-white">No assignments beyond 2 weeks</Text>
-          </View>
-        }
-      />
+      {error ? (
+        <QueryErrorState error={error} subject="assignments" onRetry={retry} retrying={retrying} />
+      ) : (
+        <SectionList
+          className="flex-1"
+          sections={sections}
+          keyExtractor={(assignment) =>
+            `${assignment.objectSectionID}-${assignment.assignmentName}`
+          }
+          renderItem={renderItem}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text className="mb-2 mt-5 text-xl font-semibold text-stone-500">{title}</Text>
+          )}
+          contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 32, paddingBottom: 24 }}
+          ListHeaderComponent={
+            beyondAssignments.length > 0 ? (
+              <Text className="text-3xl font-bold text-white">All Upcoming</Text>
+            ) : null
+          }
+          ListEmptyComponent={
+            <View className="flex-1 items-center justify-center pt-20">
+              <Text className="text-xl font-medium text-white">No assignments beyond 2 weeks</Text>
+            </View>
+          }
+        />
+      )}
     </SafeAreaView>
   );
 }

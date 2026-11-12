@@ -69,7 +69,7 @@ function getTaskStatus(task: CourseTermTaskOption) {
 export default function SelectTerm() {
   const queryClient = useQueryClient();
   const { preferredTermID, preferredTaskID } = usePreferences();
-  const { data: terms = [], isLoading, error, refetch } = useCourseTerms();
+  const { data: terms = [], isLoading, error, refetch, isFetching } = useCourseTerms();
   const contentTopPadding = useTransparentHeaderScrollPadding(24);
   const contentBottomPadding = useBottomContentPadding(32, { includesNativeTabBar: true });
 
@@ -87,15 +87,16 @@ export default function SelectTerm() {
     );
   }
 
-  if (error && terms.length === 0) {
+  if (error) {
     return (
       <View className="flex-1 bg-neutral-900" collapsable={false}>
         <QueryErrorState
-          title="Unable to load terms"
-          message="Your terms are unavailable right now. Try again."
+          error={error}
+          subject="terms"
           onRetry={async () => {
             await refetch();
           }}
+          retrying={isFetching}
         />
       </View>
     );

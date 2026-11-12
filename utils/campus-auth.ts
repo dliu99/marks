@@ -7,11 +7,10 @@ import {
   createCampusTransport,
   getSetCookies,
   mergeCookies,
-  CampusError,
 } from '../api/src/shared/campus-session';
-import { registerCampusDevice, renewCampusSession, verifyCampusUser } from '../shared/campus-auth';
+import { registerCampusDevice, verifyCampusUser } from '../shared/campus-auth';
 import { campusSessions, initializeCampusStorage } from './campus-session';
-import { campusFetch } from './campus-network';
+import { renewSchoolSession } from './campus-network';
 import { getAuthSession, storage, type AuthRefreshStatus } from './storage';
 import type { CampusSession } from '../api/src/shared/campus-session';
 
@@ -69,7 +68,7 @@ export async function finishCampusLogin(input: Omit<CampusSession, 'userID' | 'p
 
 export async function restoreCampusSession(): Promise<AuthRefreshStatus> {
   await initializeCampusStorage();
-  if (campusSessions.get()) return 'authenticated';
+  if (campusSessions.get()) return resumeCampusSession();
   const legacy = getAuthSession();
   if (!legacy) return 'unauthenticated';
   const apiURL = process.env.EXPO_PUBLIC_API_URL;
@@ -90,28 +89,19 @@ export async function restoreCampusSession(): Promise<AuthRefreshStatus> {
     campusSessions.save(campusSessionSchema.parse(session));
     storage.remove('uuid');
     storage.remove('sessionToken');
-    return 'authenticated';
+    return resumeCampusSession();
   } catch {
     return 'error';
   }
 }
 
-let renewal: Promise<AuthRefreshStatus> | null = null;
-export function refreshCampusSession(): Promise<AuthRefreshStatus> {
-  if (renewal) return renewal;
-  renewal = (async (): Promise<AuthRefreshStatus> => {
-    const session = campusSessions.get();
-    if (!session) return 'unauthenticated';
-    try {
-      await renewCampusSession(session, campusFetch);
-      return 'authenticated';
-    } catch (error) {
-      return error instanceof CampusError && error.status === 401 ? 'expired' : 'error';
-    }
-  })().finally(() => {
-    renewal = null;
-  });
-  return renewal;
+// Opening the app must not depend on reaching the school: a saved login opens the
+// app immediately and renews in the background. The campus client reports
+// 'expired' if Infinite Campus rejects the renewal, and school requests made in
+// the meantime wait for it instead of racing it with old cookies.
+function resumeCampusSession(): AuthRefreshStatus {
+  renewSchoolSession().catch(() => {});
+  return 'authenticated';
 }
 
 export async function signOutCampusCookies() {

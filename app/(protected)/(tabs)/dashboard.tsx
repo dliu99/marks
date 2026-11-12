@@ -1,4 +1,3 @@
-import { OfflineStatus } from '@/components/OfflineStatus';
 import {
   View,
   Text,
@@ -21,6 +20,7 @@ import { useMemo, useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { playHaptic } from '@/utils/haptics';
 import { useBottomContentPadding } from '@/utils/screen-spacing';
+import { pickSchoolError } from '@/utils/school-error';
 
 const GREETINGS = {
   morning: ['Good morning, {name}.', 'Rise and shine, {name}.'],
@@ -241,11 +241,7 @@ export default function Dashboard() {
   }, [assignments, today, courseNameMap]);
 
   const isLoading = assignmentsLoading || gradesLoading;
-  const hasError = !!(
-    (assignmentsError && !assignments) ||
-    (gradesError && !grades) ||
-    (userError && !user)
-  );
+  const error = pickSchoolError(gradesError, assignmentsError, userError);
 
   const retry = async () => {
     await onRefresh();
@@ -259,13 +255,14 @@ export default function Dashboard() {
     );
   }
 
-  if (hasError) {
+  if (error) {
     return (
       <SafeAreaView className="flex-1 bg-neutral-900" edges={['top']} collapsable={false}>
         <QueryErrorState
-          title="Unable to load your dashboard"
-          message="Assignments or grades did not load. Try again in a moment."
+          error={error}
+          subject="assignments and grades"
           onRetry={retry}
+          retrying={refreshing}
         />
       </SafeAreaView>
     );
@@ -298,7 +295,6 @@ export default function Dashboard() {
               progressBackgroundColor="white"
             />
           }>
-          <OfflineStatus />
           <View className="pb-4">
             <Text className="text-3xl font-bold text-white">
               {getGreeting(user?.firstName ?? '')}

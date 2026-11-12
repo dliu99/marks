@@ -10,6 +10,7 @@ import { releaseAssignmentModalNavigationLock } from '@/utils/assignment-modal-n
 import { AndroidSheetHeader } from '@/components/AndroidSheetHeader';
 import { useBottomContentPadding } from '@/utils/screen-spacing';
 import { isNonPointsScoringType } from '@/api/src/assignment-score';
+import { QueryErrorState } from '@/components/QueryErrorState';
 
 dayjs.extend(relativeTime);
 
@@ -54,10 +55,14 @@ export default function AssignmentModal() {
   }>();
 
   const {
-    data: assignment,
+    data: loadedAssignment,
     isLoading,
     error,
+    refetch,
+    isFetching,
   } = useAssignment(objectSectionID ? parseInt(objectSectionID, 10) : 0);
+  // Assignment detail comes only from the latest successful request.
+  const assignment = error ? undefined : loadedAssignment;
 
   useEffect(() => {
     releaseAssignmentModalNavigationLock();
@@ -131,12 +136,15 @@ export default function AssignmentModal() {
           <View className="flex-1 items-center justify-center">
             <ActivityIndicator size="large" color="#fff" />
           </View>
-        ) : error && !assignment ? (
-          <View className="flex-1 items-center justify-center px-6">
-            <Text className="text-center text-lg text-red-400">
-              Failed to load assignment details
-            </Text>
-          </View>
+        ) : error ? (
+          <QueryErrorState
+            error={error}
+            subject="assignment details"
+            onRetry={async () => {
+              await refetch();
+            }}
+            retrying={isFetching}
+          />
         ) : (
           <ScrollView
             className="flex-1 px-4"

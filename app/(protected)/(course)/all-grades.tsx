@@ -10,6 +10,7 @@ import { EditGradeSheet } from '@/components/EditGradeSheet';
 import { FinalGradeCalculatorSheet } from '@/components/FinalGradeCalculatorSheet';
 import { usePreferences } from '@/hooks/use-preferences';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { QueryErrorState } from '@/components/QueryErrorState';
 import { Ionicons } from '@expo/vector-icons';
 import { MenuView } from '@react-native-menu/menu';
 import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -43,10 +44,14 @@ export default function AllGradesModal() {
   }>();
 
   const {
-    data: courseData,
+    data: loadedCourseData,
     isLoading,
     error,
+    refetch,
+    isFetching,
   } = useCourseGrade(sectionID ? parseInt(sectionID, 10) : 0);
+  // Course detail comes only from the latest successful request.
+  const courseData = error ? undefined : loadedCourseData;
 
   const {
     modifications,
@@ -268,10 +273,16 @@ export default function AllGradesModal() {
             <View className="py-10">
               <ActivityIndicator size="large" color="#fff" />
             </View>
-          ) : error && !courseData ? (
-            <View className="rounded-2xl border border-stone-700 p-5">
-              <Text className="text-center text-lg text-red-400">Failed to load grades</Text>
-            </View>
+          ) : error ? (
+            <QueryErrorState
+              variant="inline"
+              error={error}
+              subject="grades for this course"
+              onRetry={async () => {
+                await refetch();
+              }}
+              retrying={isFetching}
+            />
           ) : (
             <>
               <View className="mb-4 flex-row items-center justify-between">

@@ -69,8 +69,6 @@ function createNetworkError(): ApiError {
   return error;
 }
 
-const GRADE_STALE_TIME = 1000 * 60 * 5;
-
 export function useUser() {
   return useQuery({
     queryKey: ['ic', 'user'],
@@ -244,7 +242,6 @@ export function useAllGrades() {
 
   return useQuery({
     queryKey: ['ic', 'courseGrades', preferredTermID, preferredTaskID],
-    staleTime: GRADE_STALE_TIME,
     queryFn: async () => {
       try {
         const client = getClient();
@@ -269,7 +266,6 @@ export function useAllGradesWithDetails() {
 
   return useQuery({
     queryKey: ['ic', 'allGradesWithDetails', preferredTermID, preferredTaskID],
-    staleTime: GRADE_STALE_TIME,
     queryFn: async () => {
       const generation = campusSessions.generation();
       const assertCurrentAccount = () => {
@@ -307,15 +303,12 @@ export function useAllGradesWithDetails() {
             preferredTaskID
           );
           if (!detailRes.ok) {
-            return (
-              queryClient.getQueryData<CourseGradeDetailResponse>([
-                'ic',
-                'courseGrade',
-                course.sectionID,
-                preferredTermID,
-                preferredTaskID,
-              ]) ?? null
-            );
+            // 404: IC has no detail for the selected term/task. 403: the campus client
+            // already renewed and retried, so the school hides this course's detail.
+            // Show the course without detail. Anything else fails the whole refresh:
+            // never fall back to older detail.
+            if (detailRes.status === 403 || detailRes.status === 404) return null;
+            throw await createApiError(detailRes);
           }
           const detail = (await detailRes.json()) as CourseGradeDetailResponse;
           assertCurrentAccount();
@@ -344,7 +337,6 @@ export function useCourseGrade(sectionID: number) {
 
   return useQuery({
     queryKey: ['ic', 'courseGrade', sectionID, preferredTermID, preferredTaskID],
-    staleTime: GRADE_STALE_TIME,
     queryFn: async () => {
       try {
         const res = await getCourseGradeDetailResponse(sectionID, preferredTermID, preferredTaskID);
@@ -364,7 +356,6 @@ export function useCourseGrade(sectionID: number) {
 export function useCourseTerms() {
   return useQuery({
     queryKey: ['ic', 'courseTerms'],
-    staleTime: GRADE_STALE_TIME,
     queryFn: async () => {
       try {
         const client = getClient();

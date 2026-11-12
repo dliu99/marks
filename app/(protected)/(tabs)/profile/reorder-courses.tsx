@@ -56,7 +56,7 @@ function CourseItem({
 }
 
 export default function ReorderCourses() {
-  const { data, isLoading, error, refetch } = useAllGrades();
+  const { data, isLoading, error, refetch, isFetching } = useAllGrades();
   const { courseOrder, hiddenCourseIds } = usePreferences();
   const contentTopPadding = useTransparentHeaderContentPadding(24);
   const contentBottomPadding = useBottomContentPadding(32, { includesNativeTabBar: true });
@@ -108,15 +108,16 @@ export default function ReorderCourses() {
     );
   }
 
-  if (error && !data) {
+  if (error) {
     return (
       <SafeAreaView className="flex-1 bg-neutral-900" edges={['top']} collapsable={false}>
         <QueryErrorState
-          title="Unable to load courses"
-          message="Your courses are unavailable right now. Try again."
+          error={error}
+          subject="courses"
           onRetry={async () => {
             await refetch();
           }}
+          retrying={isFetching}
         />
       </SafeAreaView>
     );

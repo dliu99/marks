@@ -1,14 +1,14 @@
-import { OfflineStatus } from '@/components/OfflineStatus';
 import { View, Text, SectionList, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAllAssignments, useGrades } from '@/hooks/use-ic';
 import { AssignmentCard } from '@/components/AssignmentCard';
 import { Assignment } from '@/api/src/types';
 import { QueryErrorState } from '@/components/QueryErrorState';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSearch } from './_context';
 import { useBottomContentPadding } from '@/utils/screen-spacing';
+import { pickSchoolError } from '@/utils/school-error';
 
 function getAllUpcomingAssignments(assignments: Assignment[], today: dayjs.Dayjs): Assignment[] {
   const todayStart = today.startOf('day');
@@ -92,10 +92,16 @@ export default function Search() {
   );
 
   const isLoading = assignmentsLoading || gradesLoading;
-  const hasError = !!((assignmentsError && !assignments) || (gradesError && !grades));
+  const error = pickSchoolError(assignmentsError, gradesError);
+  const [retrying, setRetrying] = useState(false);
 
   const retry = async () => {
-    await Promise.all([refetchAssignments(), refetchGrades()]);
+    setRetrying(true);
+    try {
+      await Promise.all([refetchAssignments(), refetchGrades()]);
+    } finally {
+      setRetrying(false);
+    }
   };
 
   if (isLoading) {
@@ -106,14 +112,10 @@ export default function Search() {
     );
   }
 
-  if (hasError) {
+  if (error) {
     return (
       <SafeAreaView className="flex-1 bg-neutral-900" edges={[]} collapsable={false}>
-        <QueryErrorState
-          title="Unable to load assignments"
-          message="Search data did not load. Try again."
-          onRetry={retry}
-        />
+        <QueryErrorState error={error} subject="assignments" onRetry={retry} retrying={retrying} />
       </SafeAreaView>
     );
   }
@@ -121,7 +123,6 @@ export default function Search() {
   return (
     <SafeAreaView className="flex-1 bg-neutral-900" edges={[]} collapsable={false}>
       <SectionList
-        ListHeaderComponent={<OfflineStatus />}
         className="flex-1"
         sections={sections}
         keyExtractor={(assignment) => `${assignment.objectSectionID}-${assignment.assignmentName}`}
