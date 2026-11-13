@@ -13,6 +13,7 @@ const COURSE_ORDER_KEY = 'preferences.courseOrder';
 const HIDDEN_COURSE_IDS_KEY = 'preferences.hiddenCourseIds';
 const PREFERRED_TERM_ID_KEY = 'preferences.preferredTermID';
 const PREFERRED_TASK_ID_KEY = 'preferences.preferredTaskID';
+const PREFERRED_TERM_KEEP_KEY = 'preferences.preferredTermKeepAfterEnd';
 const DISMISSED_ANNOUNCEMENT_PREFIX = 'announcement.dismissed.';
 const DEFAULT_HOME_PAGE_KEY = 'preferences.defaultHomePage';
 let cachedCourseOrderRaw: string | null | undefined;
@@ -183,6 +184,17 @@ export function setPreferredTaskID(taskID: number | null): void {
   }
 
   storage.set(PREFERRED_TASK_ID_KEY, taskID);
+}
+
+// Set when the student picks a term that is already over, so that choice is kept.
+// A pin made while its term was in session lapses to Automatic once a newer term starts.
+export function getKeepPreferredTermAfterEnd(): boolean {
+  return storage.getBoolean(PREFERRED_TERM_KEEP_KEY) ?? false;
+}
+
+export function setKeepPreferredTermAfterEnd(value: boolean): void {
+  if (value) storage.set(PREFERRED_TERM_KEEP_KEY, true);
+  else storage.remove(PREFERRED_TERM_KEEP_KEY);
 }
 
 export function isAnnouncementDismissed(id: string): boolean {

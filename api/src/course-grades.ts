@@ -65,6 +65,31 @@ export const getAutomaticTermIDs = (terms: DatedTerm[], now: Date = new Date()):
   return [...new Set(terms.map((term) => term.termID))];
 };
 
+/**
+ * Whether a term the student pinned has been replaced by a newer one: it has ended
+ * (or is no longer published) while a different term is in session. A pin like that
+ * keeps showing the old term's final state, which reads as grades that stopped
+ * updating. During a break with no term in session the pin is left alone.
+ */
+export const isPinnedTermSuperseded = (
+  terms: Pick<CourseGradeTerm, 'termID' | 'startDate' | 'endDate'>[],
+  pinnedTermID: number,
+  now: Date = new Date()
+): boolean => {
+  if (terms.length === 0) return false;
+  const today = getDateKey(now);
+  const pinned = terms.filter((term) => term.termID === pinnedTermID);
+  if (pinned.some((term) => !term.endDate || term.endDate >= today)) return false;
+  return terms.some(
+    (term) =>
+      term.termID !== pinnedTermID &&
+      term.startDate &&
+      term.endDate &&
+      term.startDate <= today &&
+      today <= term.endDate
+  );
+};
+
 type HoldsAssignments = (termID: number) => boolean;
 
 const termHoldsAssignments = (terms: DatedTerm[], sectionID?: number): HoldsAssignments => {

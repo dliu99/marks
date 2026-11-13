@@ -6,6 +6,7 @@ import {
   getAutomaticGradingTermIDs,
   getAutomaticTermIDs,
   getCourseTerms,
+  isPinnedTermSuperseded,
 } from './course-grades';
 import type { Course, Enrollment, Term } from './types';
 
@@ -558,5 +559,38 @@ describe('district grading layouts', () => {
       taskName: 'Progress Grade',
       score: 'C',
     });
+  });
+});
+
+describe('isPinnedTermSuperseded', () => {
+  const quarters = [
+    term(301, 1, '2026-08-12', '2026-10-23'),
+    term(302, 2, '2026-10-26', '2026-12-18'),
+    term(303, 3, '2027-01-05', '2027-03-12'),
+  ];
+
+  test('a pinned term that ended while a newer term is in session is superseded', () => {
+    expect(isPinnedTermSuperseded(quarters, 301, new Date('2026-11-12T12:00:00Z'))).toBe(true);
+  });
+
+  test('a pinned term still in session is kept, including its last day', () => {
+    expect(isPinnedTermSuperseded(quarters, 301, new Date('2026-10-23T12:00:00Z'))).toBe(false);
+    expect(isPinnedTermSuperseded(quarters, 302, new Date('2026-11-12T12:00:00Z'))).toBe(false);
+  });
+
+  test('a pinned term is kept during a break with no term in session', () => {
+    expect(isPinnedTermSuperseded(quarters, 302, new Date('2026-12-28T12:00:00Z'))).toBe(false);
+  });
+
+  test('a pinned future term is kept', () => {
+    expect(isPinnedTermSuperseded(quarters, 303, new Date('2026-11-12T12:00:00Z'))).toBe(false);
+  });
+
+  test('a pinned term that is no longer published is superseded by the term in session', () => {
+    expect(isPinnedTermSuperseded(quarters, 999, new Date('2026-11-12T12:00:00Z'))).toBe(true);
+  });
+
+  test('nothing is superseded when no terms are returned', () => {
+    expect(isPinnedTermSuperseded([], 301, new Date('2026-11-12T12:00:00Z'))).toBe(false);
   });
 });

@@ -7,7 +7,12 @@ import { useCourseTerms } from '@/hooks/use-ic';
 import { usePreferences } from '@/hooks/use-preferences';
 import { playHaptic } from '@/utils/haptics';
 import { useBottomContentPadding, useTransparentHeaderScrollPadding } from '@/utils/screen-spacing';
-import { setPreferredTaskID, setPreferredTermID } from '@/utils/storage';
+import {
+  setKeepPreferredTermAfterEnd,
+  setPreferredTaskID,
+  setPreferredTermID,
+} from '@/utils/storage';
+import { isPinnedTermSuperseded } from '@/api/src/course-grades';
 
 function TermRow({
   label,
@@ -74,6 +79,9 @@ export default function SelectTerm() {
   const contentBottomPadding = useBottomContentPadding(32, { includesNativeTabBar: true });
 
   const selectTask = (termID: number | null, taskID: number | null) => {
+    // Picking a term that is already over is deliberate, so it stays selected. A term
+    // picked while in session returns to Automatic once a newer term starts.
+    setKeepPreferredTermAfterEnd(termID !== null && isPinnedTermSuperseded(terms, termID));
     setPreferredTermID(termID);
     setPreferredTaskID(taskID);
     void queryClient.invalidateQueries({ queryKey: ['ic'] });

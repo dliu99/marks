@@ -16,6 +16,13 @@ import {
   UserProfile,
 } from '@/api/src/types';
 import { usePreferences } from '@/hooks/use-preferences';
+import { isPinnedTermSuperseded } from '@/api/src/course-grades';
+import {
+  getKeepPreferredTermAfterEnd,
+  setPreferredTaskID,
+  setPreferredTermID,
+} from '@/utils/storage';
+import { useEffect } from 'react';
 
 const localAPI = createLocalAPI(campusSessions, campusFetch);
 
@@ -353,8 +360,9 @@ export function useCourseGrade(sectionID: number) {
   });
 }
 
-export function useCourseTerms() {
+export function useCourseTerms(enabled = true) {
   return useQuery({
+    enabled,
     queryKey: ['ic', 'courseTerms'],
     queryFn: async () => {
       try {
@@ -398,4 +406,22 @@ export function useUpdateResponsiveSchedule() {
       }
     },
   });
+}
+
+/**
+ * Return a pinned term to Automatic once it has ended and a newer term is in session.
+ * The pin is a saved preference that outlives app updates and sign-outs, so without
+ * this a student who pinned last quarter keeps seeing that quarter's final grades.
+ */
+export function useExpirePinnedTerm() {
+  const { preferredTermID } = usePreferences();
+  const { data: terms } = useCourseTerms(preferredTermID !== null);
+
+  useEffect(() => {
+    if (preferredTermID === null || !terms || getKeepPreferredTermAfterEnd()) return;
+    if (!isPinnedTermSuperseded(terms, preferredTermID)) return;
+    // The grade queries are keyed by these values, so they refetch for Automatic.
+    setPreferredTermID(null);
+    setPreferredTaskID(null);
+  }, [preferredTermID, terms]);
 }

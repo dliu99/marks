@@ -5,6 +5,7 @@ import { QueryErrorState } from '@/components/QueryErrorState';
 import { useAuth } from '@/utils/auth-context';
 import { campusSessions } from '@/utils/campus-session';
 import { clearAuth } from '@/utils/storage';
+import { useExpirePinnedTerm } from '@/hooks/use-ic';
 
 export const unstable_settings = {
   initialRouteName: '(tabs)',
@@ -49,6 +50,20 @@ export default function ProtectedLayout() {
     return <Redirect href="/(auth)/onboarding" />;
   }
 
+  return (
+    <>
+      <PinnedTermExpiry />
+      <ProtectedStack />
+    </>
+  );
+}
+
+function PinnedTermExpiry() {
+  useExpirePinnedTerm();
+  return null;
+}
+
+function ProtectedStack() {
   return (
     <Stack initialRouteName="(tabs)">
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
